@@ -1,0 +1,10 @@
+@"
+node_modules/
+.nuxt/
+.output/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+"@ | Out-File -Encoding UTF8 .gitignore
