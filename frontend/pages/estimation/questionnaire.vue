@@ -5,7 +5,7 @@
       <div class="mb-8">
         <div class="flex justify-between items-center mb-2">
           <span class="text-sm text-slate-500">
-            Question {{ store.currentStep + 1 }} / {{ store.totalSteps }}
+            {{ $t('questionnaire.questionProgress', { current: store.currentStep + 1, total: store.totalSteps }) }}
           </span>
           <span class="text-sm font-medium text-blue-600">{{ store.progress }}%</span>
         </div>
@@ -21,28 +21,28 @@
       <div v-if="store.useAiSuggestions && store.aiAnalysis" class="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-3">
         <IconBrain class="w-5 h-5 text-blue-600" />
         <span class="text-sm text-blue-700">
-          Réponses pré-remplies par l'analyse IA — vous pouvez les modifier
+          {{ $t('estimation.aiPrefilledNote') }}
         </span>
         <button @click="store.clearAiSuggestions()" class="ml-auto text-sm text-blue-600 hover:underline">
-          Effacer
+          {{ $t('estimation.clearSuggestions') }}
         </button>
       </div>
 
       <!-- Question card -->
-      <div v-if="store.currentQuestion" class="card p-8">
+      <div v-if="currentTranslatedQuestion" class="card p-8">
         <div class="flex items-center gap-4 mb-6">
           <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
             <component :is="questionIcon" class="w-6 h-6 text-blue-600" />
           </div>
           <h2 class="text-xl font-semibold text-slate-800">
-            {{ store.currentQuestion.question }}
+            {{ currentTranslatedQuestion.question }}
           </h2>
         </div>
 
         <!-- Options -->
         <div class="space-y-3">
           <button
-            v-for="option in store.currentQuestion.options"
+            v-for="option in currentTranslatedQuestion.options"
             :key="option.value"
             @click="handleOptionClick(option.value)"
             class="w-full text-left p-4 rounded-xl border-2 transition-all"
@@ -59,7 +59,7 @@
               <span class="font-medium text-slate-700">{{ option.label }}</span>
               <div class="flex items-center gap-2">
                 <span v-if="aiSuggestedValue === option.value" class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-                  Suggéré par IA
+                  {{ $t('estimation.suggestedByAI') }}
                 </span>
                 <div
                   class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition"
@@ -98,7 +98,7 @@
             class="btn-secondary"
           >
             <IconArrowLeft class="w-4 h-4" />
-            Précédent
+            {{ $t('common.previous') }}
           </button>
           <button
             v-else
@@ -106,7 +106,7 @@
             class="btn-secondary"
           >
             <IconArrowLeft class="w-4 h-4" />
-            Retour
+            {{ $t('questionnaire.backToUpload') }}
           </button>
 
           <button
@@ -115,7 +115,7 @@
             :disabled="!store.isCurrentStepAnswered"
             class="btn-primary"
           >
-            Suivant
+            {{ $t('common.next') }}
             <IconArrowRight class="w-4 h-4" />
           </button>
           <button
@@ -124,7 +124,7 @@
             :disabled="!store.isComplete"
             class="btn-primary"
           >
-            Voir le résultat
+            {{ $t('questionnaire.viewResult') }}
             <IconArrowRight class="w-4 h-4" />
           </button>
         </div>
@@ -134,17 +134,25 @@
 </template>
 
 <script setup lang="ts">
-import { QUESTIONS } from '~/config/data'
-
 definePageMeta({
   middleware: 'auth',
 })
 
+const { getTranslatedQuestions } = useI18nData()
 const store = useEstimationStore()
 
 // Load TJM profiles
 onMounted(async () => {
   await store.loadTjmProfiles()
+})
+
+// Get translated questions
+const translatedQuestions = getTranslatedQuestions()
+
+// Get current question with translations
+const currentTranslatedQuestion = computed(() => {
+  if (!store.currentQuestion) return null
+  return translatedQuestions[store.currentStep]
 })
 
 const questionIcon = computed(() => {
@@ -170,18 +178,20 @@ const aiSuggestedValue = computed(() => {
 })
 
 const isSelected = (value: string): boolean => {
-  const answer = store.answers[store.currentQuestion.id]
-  if (store.currentQuestion.multiSelect) {
+  if (!currentTranslatedQuestion.value) return false
+  const answer = store.answers[currentTranslatedQuestion.value.id]
+  if (currentTranslatedQuestion.value.multiSelect) {
     return Array.isArray(answer) && answer.includes(value)
   }
   return answer === value
 }
 
 const handleOptionClick = (value: string) => {
-  if (store.currentQuestion.multiSelect) {
-    store.toggleMultiSelectAnswer(store.currentQuestion.id, value)
+  if (!currentTranslatedQuestion.value) return
+  if (currentTranslatedQuestion.value.multiSelect) {
+    store.toggleMultiSelectAnswer(currentTranslatedQuestion.value.id, value)
   } else {
-    store.setAnswer(store.currentQuestion.id, value)
+    store.setAnswer(currentTranslatedQuestion.value.id, value)
   }
 }
 

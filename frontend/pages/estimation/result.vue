@@ -4,11 +4,25 @@
       <!-- Header -->
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h2 class="text-3xl font-bold text-slate-800">Recommandation</h2>
-          <p class="text-slate-500 mt-1">Basée sur vos réponses au questionnaire</p>
+          <h2 class="text-3xl font-bold text-slate-800">{{ $t('result.title') }}</h2>
+          <p class="text-slate-500 mt-1">{{ $t('result.subtitle') }}</p>
         </div>
         <button @click="handleNewEstimation" class="btn-secondary">
-          Nouvelle estimation
+          {{ $t('nav.newEstimation') }}
+        </button>
+      </div>
+
+      <!-- Warning if questionnaire not complete -->
+      <div v-if="!store.isComplete" class="card p-6 mb-8 bg-amber-50 border border-amber-300">
+        <div class="flex items-center gap-3 mb-3">
+          <IconClock class="w-6 h-6 text-amber-600" />
+          <h3 class="text-lg font-semibold text-amber-800">{{ $t('result.incompleteQuestionnaire') }}</h3>
+        </div>
+        <p class="text-amber-700 mb-4">
+          {{ $t('result.incompleteMessage') }}
+        </p>
+        <button @click="navigateTo('/estimation/questionnaire')" class="btn-primary">
+          {{ $t('result.completeQuestionnaire') }}
         </button>
       </div>
 
@@ -18,10 +32,10 @@
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-        <p class="text-slate-500 mt-4">Chargement de la grille TJM...</p>
+        <p class="text-slate-500 mt-4">{{ $t('result.loadingRates') }}</p>
       </div>
 
-      <template v-else>
+      <template v-else-if="store.isComplete">
         <!-- Stack recommendation -->
         <div
           v-if="recommendation && stack"
@@ -31,7 +45,7 @@
           <div class="flex items-start justify-between">
             <div>
               <span :class="stack.badgeClass" class="mb-3 inline-block">
-                Recommandé
+                {{ $t('result.recommended') }}
               </span>
               <h3 class="text-2xl font-bold" :class="stack.textColor">
                 {{ stack.name }}
@@ -41,21 +55,21 @@
                 <div class="flex items-center gap-2">
                   <IconBox class="w-4 h-4 text-slate-500" />
                   <span class="text-sm text-slate-600">
-                    <strong>CMS :</strong> {{ stack.cms }}
+                    <strong>{{ $t('result.cms') }} :</strong> {{ stack.cms }}
                   </span>
                 </div>
                 <div class="flex items-center gap-2">
                   <IconLayers class="w-4 h-4 text-slate-500" />
                   <span class="text-sm text-slate-600">
-                    <strong>Frontend :</strong> {{ stack.frontend }}
+                    <strong>{{ $t('result.frontend') }} :</strong> {{ stack.frontend }}
                   </span>
                 </div>
               </div>
             </div>
             <div class="text-right">
-              <p class="text-sm text-slate-500">Infra mensuelle</p>
+              <p class="text-sm text-slate-500">{{ $t('result.monthlyCost') }}</p>
               <p class="text-lg font-semibold" :class="stack.textColor">
-                {{ stack.infraCost.min }} - {{ stack.infraCost.max }} €/mois
+                {{ stack.infraCost.min }} - {{ stack.infraCost.max }} {{ $t('result.perMonth') }}
               </p>
             </div>
           </div>
@@ -64,13 +78,13 @@
         <!-- Project name & save -->
         <div class="card p-6 mb-6">
           <label class="block text-sm font-medium text-slate-700 mb-2">
-            Nom du projet
+            {{ $t('result.projectName') }}
           </label>
           <div class="flex gap-3">
             <input
               v-model="store.projectName"
               type="text"
-              placeholder="Ex: Site corporate Acme Inc."
+              :placeholder="$t('result.projectNamePlaceholder')"
               class="input flex-1"
             />
             <button
@@ -82,11 +96,11 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              {{ store.savedProjectId ? 'Mettre à jour' : 'Sauvegarder' }}
+              {{ store.savedProjectId ? $t('result.updateProject') : $t('common.save') }}
             </button>
           </div>
           <p v-if="saveSuccess" class="text-sm text-green-600 mt-2">
-            ✓ Projet sauvegardé avec succès
+            {{ $t('result.projectSaved') }}
           </p>
         </div>
 
@@ -102,7 +116,7 @@
             "
           >
             <IconClock class="w-5 h-5" />
-            Estimation rapide
+            {{ $t('result.quickEstimation') }}
           </button>
           <button
             @click="store.setEstimationType('detailed')"
@@ -114,24 +128,24 @@
             "
           >
             <IconBarChart class="w-5 h-5" />
-            Chiffrage détaillé
+            {{ $t('result.detailedBudget') }}
           </button>
         </div>
 
         <!-- Quick estimation -->
         <div v-if="store.estimationType === 'quick' && quickEstimate" class="card p-6">
-          <h4 class="text-lg font-semibold text-slate-800 mb-4">Estimation rapide</h4>
+          <h4 class="text-lg font-semibold text-slate-800 mb-4">{{ $t('result.quickEstimation') }}</h4>
           <div class="grid grid-cols-2 gap-6">
             <div class="bg-slate-50 rounded-lg p-4">
-              <p class="text-sm text-slate-500 mb-1">Charge estimée</p>
+              <p class="text-sm text-slate-500 mb-1">{{ $t('result.estimatedWorkload') }}</p>
               <p class="text-3xl font-bold text-slate-800">
                 {{ quickEstimate.daysMin }} - {{ quickEstimate.daysMax }}
-                <span class="text-lg font-normal text-slate-500">jours</span>
+                <span class="text-lg font-normal text-slate-500">{{ $t('result.days') }}</span>
               </p>
             </div>
             <div class="bg-slate-50 rounded-lg p-4">
               <p class="text-sm text-slate-500 mb-1">
-                Budget estimé (TJM moyen {{ quickEstimate.averageTjm }}€)
+                {{ $t('result.estimatedBudget') }} ({{ $t('result.averageDailyRate', { rate: quickEstimate.averageTjm }) }})
               </p>
               <p class="text-3xl font-bold text-slate-800">
                 {{ formatCurrencyK(quickEstimate.budgetMin) }} -
@@ -151,7 +165,7 @@
         <div v-if="store.estimationType === 'detailed' && detailedBudget" class="space-y-6">
           <div class="card p-6">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-slate-800">Chiffrage détaillé</h4>
+              <h4 class="text-lg font-semibold text-slate-800">{{ $t('result.detailedBudget') }}</h4>
               <div class="flex items-center gap-4">
                 <p class="text-sm text-slate-500">Base : {{ avgDays }} jours</p>
                 <span v-if="store.hasCustomTjm" class="badge-warning text-xs">
@@ -164,14 +178,14 @@
               <table class="w-full">
                 <thead>
                   <tr class="border-b border-slate-200">
-                    <th class="text-left py-3 text-sm font-medium text-slate-500">Profil</th>
-                    <th class="text-center py-3 text-sm font-medium text-slate-500 w-20">%</th>
-                    <th class="text-right py-3 text-sm font-medium text-slate-500">Jours</th>
+                    <th class="text-left py-3 text-sm font-medium text-slate-500">{{ $t('result.profile') }}</th>
+                    <th class="text-center py-3 text-sm font-medium text-slate-500 w-20">{{ $t('result.percentage') }}</th>
+                    <th class="text-right py-3 text-sm font-medium text-slate-500">{{ $t('result.days') }}</th>
                     <th class="text-right py-3 text-sm font-medium text-slate-500 w-28">
-                      TJM
-                      <span class="text-xs text-slate-400 block">standard / appliqué</span>
+                      {{ $t('result.dailyRate') }}
+                      <span class="text-xs text-slate-400 block">{{ $t('result.standardApplied') }}</span>
                     </th>
-                    <th class="text-right py-3 text-sm font-medium text-slate-500">Total</th>
+                    <th class="text-right py-3 text-sm font-medium text-slate-500">{{ $t('result.total') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -220,7 +234,7 @@
                 <tfoot>
                   <tr class="bg-slate-50">
                     <td class="py-3 text-sm font-semibold text-slate-800" colspan="2">
-                      SOUS-TOTAL
+                      {{ $t('result.subtotal') }}
                     </td>
                     <td class="py-3 text-right text-sm font-semibold text-slate-800">
                       {{ detailedBudget.totalDays }} j
@@ -237,14 +251,14 @@
             <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-200">
               <div class="flex gap-2">
                 <button @click="store.resetDistribution" class="btn-ghost text-sm">
-                  Réinitialiser %
+                  {{ $t('result.resetPercentages') }}
                 </button>
                 <button 
                   v-if="store.hasCustomTjm"
                   @click="store.clearAllTjmOverrides" 
                   class="btn-ghost text-sm"
                 >
-                  Réinitialiser TJM
+                  {{ $t('result.resetRates') }}
                 </button>
               </div>
             </div>
@@ -252,7 +266,7 @@
 
           <!-- Discount section -->
           <div class="card p-6">
-            <h4 class="text-lg font-semibold text-slate-800 mb-4">Remise commerciale</h4>
+            <h4 class="text-lg font-semibold text-slate-800 mb-4">{{ $t('result.commercialDiscount') }}</h4>
             
             <div class="flex items-center gap-4 mb-4">
               <div class="flex gap-2">
@@ -263,25 +277,25 @@
                     ? 'bg-slate-800 text-white' 
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
                 >
-                  Aucune
+                  {{ $t('result.noDiscount') }}
                 </button>
                 <button
                   @click="store.setDiscountType('percentage')"
                   class="px-3 py-2 text-sm rounded-lg transition"
-                  :class="store.discountType === 'percentage' 
-                    ? 'bg-slate-800 text-white' 
+                  :class="store.discountType === 'percentage'
+                    ? 'bg-slate-800 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
                 >
-                  Pourcentage
+                  {{ $t('result.percentageDiscount') }}
                 </button>
                 <button
                   @click="store.setDiscountType('fixed')"
                   class="px-3 py-2 text-sm rounded-lg transition"
-                  :class="store.discountType === 'fixed' 
-                    ? 'bg-slate-800 text-white' 
+                  :class="store.discountType === 'fixed'
+                    ? 'bg-slate-800 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
                 >
-                  Montant fixe
+                  {{ $t('result.fixedDiscount') }}
                 </button>
               </div>
 
@@ -303,15 +317,15 @@
             <div class="bg-slate-50 rounded-lg p-4">
               <div class="flex justify-between items-center">
                 <div>
-                  <p class="text-sm text-slate-500">Budget avant remise</p>
+                  <p class="text-sm text-slate-500">{{ $t('result.budgetBeforeDiscount') }}</p>
                   <p class="text-lg text-slate-600">{{ formatCurrency(detailedBudget.total) }}</p>
                 </div>
                 <div v-if="discountResult.discountAmount > 0" class="text-center">
-                  <p class="text-sm text-slate-500">Remise</p>
+                  <p class="text-sm text-slate-500">{{ $t('result.discount') }}</p>
                   <p class="text-lg text-green-600">- {{ formatCurrency(discountResult.discountAmount) }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="text-sm text-slate-500">Budget final HT</p>
+                  <p class="text-sm text-slate-500">{{ $t('result.finalBudget') }}</p>
                   <p class="text-2xl font-bold text-blue-600">
                     {{ formatCurrency(discountResult.finalBudget) }}
                   </p>
@@ -324,7 +338,7 @@
           <div class="flex justify-end">
             <button @click="exportPDF" class="btn-secondary">
               <IconDownload class="w-4 h-4" />
-              Exporter PDF
+              {{ $t('result.exportPDF') }}
             </button>
           </div>
         </div>
@@ -334,7 +348,7 @@
 </template>
 
 <script setup lang="ts">
-import { STACKS } from '~/config/data'
+import { STACK_CONFIG } from '~/config/data'
 
 definePageMeta({
   middleware: 'auth',
@@ -343,23 +357,24 @@ definePageMeta({
 const store = useEstimationStore()
 const { calculateQuickEstimate, calculateDetailedBudget, calculateDiscount, formatCurrency, formatCurrencyK } =
   useEstimation()
+const { t } = useI18n()
+const { getTranslatedStack } = useI18nData()
 
 const isSaving = ref(false)
 const saveSuccess = ref(false)
 
-// Load TJM profiles and check completion
+// Load TJM profiles on mount (no redirect to allow showing incomplete state message)
 onMounted(async () => {
-  if (!store.isComplete) {
-    navigateTo('/estimation')
-    return
-  }
   await store.loadTjmProfiles()
 })
 
 const recommendation = computed(() => store.recommendation)
 const stack = computed(() => {
   if (!recommendation.value) return null
-  return STACKS[recommendation.value.stack]
+  return {
+    ...STACK_CONFIG[recommendation.value.stack],
+    ...getTranslatedStack(recommendation.value.stack)
+  }
 })
 
 const avgDays = computed(() => {
@@ -429,6 +444,6 @@ const handleSave = async () => {
 
 const exportPDF = () => {
   // TODO: Implement PDF export
-  alert('Export PDF - Fonctionnalité à implémenter')
+  alert(t('result.exportPDFNotImplemented'))
 }
 </script>

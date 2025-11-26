@@ -1,0 +1,334 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "finish": "Terminer",
+    "new": "Nouveau",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "export": "Exporter",
+    "download": "Télécharger",
+    "upload": "Uploader",
+    "browse": "Parcourir",
+    "optional": "optionnel",
+    "required": "requis"
+  },
+  "nav": {
+    "newEstimation": "Nouvelle estimation",
+    "history": "Historique",
+    "logout": "Déconnexion"
+  },
+  "auth": {
+    "login": "Connexion",
+    "loginTitle": "Stack Advisor",
+    "loginSubtitle": "Outil d'estimation interne",
+    "loginDescription": "Entrez vos identifiants pour accéder à l'outil",
+    "email": "Email",
+    "emailPlaceholder": "votre{'@'}email.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion...",
+    "accessRestricted": "Accès réservé à l'équipe technique",
+    "invalidCredentials": "Email ou mot de passe incorrect",
+    "errorOccurred": "Une erreur est survenue. Veuillez réessayer.",
+    "footer": "Ultranoir — Outil interne"
+  },
+  "estimation": {
+    "title": "Nouvelle estimation",
+    "subtitle": "Uploadez un document pour une analyse automatique, ou passez directement au questionnaire",
+    "uploadTitle": "Upload de document",
+    "uploadSubtitle": "Formats acceptés : PDF, Word (.docx), PowerPoint (.pptx)",
+    "uploadDragDrop": "Glissez-déposez votre document ici",
+    "uploadButton": "Parcourir",
+    "uploading": "Upload en cours...",
+    "analyzing": "Analyse en cours...",
+    "analyzeDescription": "Claude analyse votre document pour identifier les besoins",
+    "analyze": "Analyser",
+    "analyzed": "Analysé",
+    "modelLabel": "Modèle Claude :",
+    "modelHaiku": "Haiku (rapide)",
+    "modelSonnet": "Sonnet (équilibré)",
+    "modelOpus": "Opus (puissant)",
+    "viewSummary": "Résumé du brief",
+    "viewQuestionnaire": "Questions pré-remplies",
+    "briefSummary": "Analyse du brief",
+    "client": "Client",
+    "complexity": "Complexité",
+    "context": "Contexte",
+    "objectives": "Objectifs",
+    "keyFeatures": "Fonctionnalités clés",
+    "constraints": "Contraintes",
+    "risks": "Points d'attention",
+    "missingInfo": "Informations manquantes",
+    "suggestedStack": "Stack recommandée",
+    "analyzedOn": "Analysé le",
+    "tokens": "tokens",
+    "suggestedAnswers": "Réponses suggérées par l'analyse",
+    "confidence": "confiance",
+    "applyAndContinue": "Appliquer et continuer",
+    "skipSuggestions": "Ignorer les suggestions",
+    "skipToQuestionnaire": "Passer au questionnaire",
+    "aiPrefilledNote": "Réponses pré-remplies par l'analyse IA — vous pouvez les modifier",
+    "clearSuggestions": "Effacer",
+    "suggestedByAI": "Suggéré par IA",
+    "unsupportedFormat": "Format non supporté. Utilisez PDF, Word ou PowerPoint.",
+    "uploadError": "Erreur lors de l'upload du fichier",
+    "analysisError": "Erreur lors de l'analyse"
+  },
+  "questionnaire": {
+    "title": "Questionnaire",
+    "questionProgress": "Question {current} / {total}",
+    "viewResult": "Voir le résultat",
+    "incompleteQuestionnaire": "Questionnaire incomplet",
+    "incompleteMessage": "Vous devez répondre à toutes les questions pour continuer",
+    "backToUpload": "Retour"
+  },
+  "result": {
+    "title": "Recommandation",
+    "subtitle": "Basée sur vos réponses au questionnaire",
+    "recommended": "Recommandé",
+    "monthlyCost": "Infra mensuelle",
+    "perMonth": "€/mois",
+    "projectName": "Nom du projet",
+    "projectNamePlaceholder": "Ex: Site corporate Acme Inc.",
+    "saveProject": "Sauvegarder",
+    "updateProject": "Mettre à jour",
+    "projectSaved": "✓ Projet sauvegardé avec succès",
+    "quickEstimation": "Estimation rapide",
+    "detailedBudget": "Chiffrage détaillé",
+    "estimatedWorkload": "Charge estimée",
+    "days": "jours",
+    "estimatedBudget": "Budget estimé",
+    "averageDailyRate": "TJM moyen {rate}€",
+    "adjustmentApplied": "Ajustement appliqué : {modifier}% (complexité, intégrations, etc.)",
+    "baseWorkload": "Base : {days} jours",
+    "customRates": "TJM personnalisés",
+    "profile": "Profil",
+    "percentage": "%",
+    "dailyRate": "TJM",
+    "standardRate": "standard",
+    "appliedRate": "appliqué",
+    "standardApplied": "standard / appliqué",
+    "total": "Total",
+    "subtotal": "SOUS-TOTAL",
+    "resetPercentages": "Réinitialiser %",
+    "resetRates": "Réinitialiser TJM",
+    "commercialDiscount": "Remise commerciale",
+    "noDiscount": "Aucune",
+    "percentageDiscount": "Pourcentage",
+    "fixedDiscount": "Montant fixe",
+    "budgetBeforeDiscount": "Budget avant remise",
+    "discount": "Remise",
+    "finalBudget": "Budget final HT",
+    "exportPDF": "Exporter PDF",
+    "exportPDFNotImplemented": "Export PDF - Fonctionnalité à implémenter",
+    "loadingRates": "Chargement de la grille TJM...",
+    "incompleteQuestionnaire": "Questionnaire incomplet",
+    "incompleteMessage": "Vous devez d'abord compléter le questionnaire pour voir les recommandations et estimations.",
+    "completeQuestionnaire": "Compléter le questionnaire",
+    "cms": "CMS",
+    "frontend": "Frontend"
+  },
+  "history": {
+    "title": "Historique des estimations",
+    "subtitle": "Vos projets sauvegardés",
+    "projectsCount": "{count} projet(s) enregistré(s)",
+    "loadingProjects": "Chargement des projets...",
+    "noProjects": "Aucun projet enregistré",
+    "noProjectsDescription": "Commencez par créer une nouvelle estimation",
+    "project": "Projet",
+    "date": "Date",
+    "createdOn": "Créé le",
+    "stack": "Stack",
+    "stackLabel": "Stack {stack}",
+    "workload": "Jours",
+    "budget": "Budget",
+    "status": "Statut",
+    "statusDraft": "Brouillon",
+    "statusPending": "En attente",
+    "statusValidated": "Validé",
+    "actions": "Actions",
+    "view": "Voir",
+    "validate": "Valider",
+    "confirmDelete": "Supprimer le projet \"{name}\" ?",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce projet ?",
+    "deleteSuccess": "Projet supprimé avec succès",
+    "deleteError": "Erreur lors de la suppression"
+  },
+  "chat": {
+    "title": "Discussion avec Claude",
+    "subtitle": "Affinez votre analyse en posant des questions",
+    "emptyState": "Posez une question à Claude pour affiner votre analyse",
+    "emptyStateExample": "Ex: \"Peux-tu m'aider à identifier les fonctionnalités manquantes ?\"",
+    "placeholder": "Posez votre question...",
+    "send": "Envoyer",
+    "sending": "Envoi...",
+    "thinking": "Claude réfléchit...",
+    "messagesCount": "{count} messages",
+    "errorOccurred": "Une erreur est survenue",
+    "clearConversation": "Effacer la conversation"
+  },
+  "stacks": {
+    "A": {
+      "name": "Stack A — Enterprise",
+      "cms": "Drupal",
+      "frontend": "Next.js",
+      "description": "Projets complexes, multilingue avancé, workflows enterprise"
+    },
+    "B": {
+      "name": "Stack B — Standard",
+      "cms": "Directus",
+      "frontend": "Nuxt.js",
+      "description": "Sites corporate, WebGL/3D, API-first, projets moyens"
+    },
+    "C": {
+      "name": "Stack C — Léger",
+      "cms": "Decap CMS / Directus",
+      "frontend": "Nuxt.js SSG / Vite.js",
+      "description": "Sites vitrines, apps internes, budget limité"
+    }
+  },
+  "questions": {
+    "projectType": {
+      "question": "Quelle est la typologie du projet ?",
+      "options": {
+        "vitrine": {
+          "label": "Site vitrine (< 15 pages)"
+        },
+        "corporate": {
+          "label": "Site corporate (15-50 pages)"
+        },
+        "editorial": {
+          "label": "Site éditorial complexe"
+        },
+        "webapp": {
+          "label": "Application web / Dashboard"
+        },
+        "webgl": {
+          "label": "Expérience WebGL / 3D"
+        },
+        "intranet": {
+          "label": "Intranet / Portail enterprise"
+        },
+        "internal": {
+          "label": "App interne (sans SEO)"
+        }
+      }
+    },
+    "dataComplexity": {
+      "question": "Quelle est la complexité de la structuration des données ?",
+      "options": {
+        "simple": {
+          "label": "Simple (< 5 types de contenus)"
+        },
+        "medium": {
+          "label": "Moyenne (5-10 types, relations simples)"
+        },
+        "complex": {
+          "label": "Complexe (> 10 types, relations multiples)"
+        },
+        "enterprise": {
+          "label": "Enterprise (workflows, validations)"
+        }
+      }
+    },
+    "multilingual": {
+      "question": "Combien de langues sont prévues ?",
+      "options": {
+        "mono": {
+          "label": "Monolingue"
+        },
+        "bi": {
+          "label": "2-3 langues"
+        },
+        "multi": {
+          "label": "4-5 langues"
+        },
+        "enterprise": {
+          "label": "> 5 langues"
+        }
+      }
+    },
+    "integrations": {
+      "question": "Quelles intégrations tierces sont nécessaires ?",
+      "options": {
+        "none": {
+          "label": "Aucune"
+        },
+        "crm": {
+          "label": "CRM (Salesforce, HubSpot...)"
+        },
+        "erp": {
+          "label": "ERP"
+        },
+        "sso": {
+          "label": "SSO / LDAP / Active Directory"
+        },
+        "payment": {
+          "label": "Paiement en ligne"
+        },
+        "analytics": {
+          "label": "Analytics avancé / Data"
+        },
+        "search": {
+          "label": "Moteur de recherche (Algolia, Elasticsearch)"
+        }
+      }
+    },
+    "accessibility": {
+      "question": "Quel niveau d'accessibilité est requis ?",
+      "options": {
+        "none": {
+          "label": "Standard (bonnes pratiques)"
+        },
+        "aa": {
+          "label": "RGAA / WCAG AA"
+        },
+        "aaa": {
+          "label": "RGAA / WCAG AAA"
+        }
+      }
+    },
+    "security": {
+      "question": "Quelles contraintes sécurité ?",
+      "options": {
+        "standard": {
+          "label": "Standard"
+        },
+        "enhanced": {
+          "label": "Renforcée (audit sécurité)"
+        },
+        "enterprise": {
+          "label": "Enterprise (conformité, certifications)"
+        }
+      }
+    },
+    "deadline": {
+      "question": "Quel est le planning prévu ?",
+      "options": {
+        "urgent": {
+          "label": "Urgent (< 4 semaines)",
+          "note": "Privilégier Stack B ou C"
+        },
+        "standard": {
+          "label": "Standard (1-3 mois)"
+        },
+        "comfortable": {
+          "label": "Confortable (3-6 mois)"
+        },
+        "long": {
+          "label": "Long terme (> 6 mois)"
+        }
+      }
+    }
+  }
+}

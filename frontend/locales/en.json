@@ -1,0 +1,334 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "finish": "Finish",
+    "new": "New",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "download": "Download",
+    "upload": "Upload",
+    "browse": "Browse",
+    "optional": "optional",
+    "required": "required"
+  },
+  "nav": {
+    "newEstimation": "New Estimation",
+    "history": "History",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Login",
+    "loginTitle": "Stack Advisor",
+    "loginSubtitle": "Internal estimation tool",
+    "loginDescription": "Enter your credentials to access the tool",
+    "email": "Email",
+    "emailPlaceholder": "your{'@'}email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "accessRestricted": "Access restricted to technical team",
+    "invalidCredentials": "Invalid email or password",
+    "errorOccurred": "An error occurred. Please try again.",
+    "footer": "Ultranoir — Internal tool"
+  },
+  "estimation": {
+    "title": "New Estimation",
+    "subtitle": "Upload a document for automatic analysis, or go directly to the questionnaire",
+    "uploadTitle": "Document Upload",
+    "uploadSubtitle": "Accepted formats: PDF, Word (.docx), PowerPoint (.pptx)",
+    "uploadDragDrop": "Drag and drop your document here",
+    "uploadButton": "Browse",
+    "uploading": "Uploading...",
+    "analyzing": "Analyzing...",
+    "analyzeDescription": "Claude is analyzing your document to identify needs",
+    "analyze": "Analyze",
+    "analyzed": "Analyzed",
+    "modelLabel": "Claude Model:",
+    "modelHaiku": "Haiku (fast)",
+    "modelSonnet": "Sonnet (balanced)",
+    "modelOpus": "Opus (powerful)",
+    "viewSummary": "Brief Summary",
+    "viewQuestionnaire": "Pre-filled Questions",
+    "briefSummary": "Brief Analysis",
+    "client": "Client",
+    "complexity": "Complexity",
+    "context": "Context",
+    "objectives": "Objectives",
+    "keyFeatures": "Key Features",
+    "constraints": "Constraints",
+    "risks": "Risk Points",
+    "missingInfo": "Missing Information",
+    "suggestedStack": "Recommended Stack",
+    "analyzedOn": "Analyzed on",
+    "tokens": "tokens",
+    "suggestedAnswers": "AI suggested answers",
+    "confidence": "confidence",
+    "applyAndContinue": "Apply and Continue",
+    "skipSuggestions": "Skip Suggestions",
+    "skipToQuestionnaire": "Go to Questionnaire",
+    "aiPrefilledNote": "AI pre-filled answers — you can modify them",
+    "clearSuggestions": "Clear",
+    "suggestedByAI": "AI Suggested",
+    "unsupportedFormat": "Unsupported format. Use PDF, Word or PowerPoint.",
+    "uploadError": "File upload error",
+    "analysisError": "Analysis error"
+  },
+  "questionnaire": {
+    "title": "Questionnaire",
+    "questionProgress": "Question {current} / {total}",
+    "viewResult": "View Result",
+    "incompleteQuestionnaire": "Incomplete Questionnaire",
+    "incompleteMessage": "You must answer all questions to continue",
+    "backToUpload": "Back"
+  },
+  "result": {
+    "title": "Recommendation",
+    "subtitle": "Based on your questionnaire answers",
+    "recommended": "Recommended",
+    "monthlyCost": "Monthly infra",
+    "perMonth": "€/month",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "Ex: Acme Inc. Corporate Website",
+    "saveProject": "Save",
+    "updateProject": "Update",
+    "projectSaved": "✓ Project saved successfully",
+    "quickEstimation": "Quick Estimation",
+    "detailedBudget": "Detailed Budget",
+    "estimatedWorkload": "Estimated Workload",
+    "days": "days",
+    "estimatedBudget": "Estimated Budget",
+    "averageDailyRate": "Average daily rate {rate}€",
+    "adjustmentApplied": "Adjustment applied: {modifier}% (complexity, integrations, etc.)",
+    "baseWorkload": "Base: {days} days",
+    "customRates": "Custom rates",
+    "profile": "Profile",
+    "percentage": "%",
+    "dailyRate": "Daily Rate",
+    "standardRate": "standard",
+    "appliedRate": "applied",
+    "standardApplied": "standard / applied",
+    "total": "Total",
+    "subtotal": "SUBTOTAL",
+    "resetPercentages": "Reset %",
+    "resetRates": "Reset Rates",
+    "commercialDiscount": "Commercial Discount",
+    "noDiscount": "None",
+    "percentageDiscount": "Percentage",
+    "fixedDiscount": "Fixed Amount",
+    "budgetBeforeDiscount": "Budget before discount",
+    "discount": "Discount",
+    "finalBudget": "Final Budget (excl. tax)",
+    "exportPDF": "Export PDF",
+    "exportPDFNotImplemented": "PDF Export - Feature to be implemented",
+    "loadingRates": "Loading rate grid...",
+    "incompleteQuestionnaire": "Incomplete Questionnaire",
+    "incompleteMessage": "You must first complete the questionnaire to see recommendations and estimates.",
+    "completeQuestionnaire": "Complete Questionnaire",
+    "cms": "CMS",
+    "frontend": "Frontend"
+  },
+  "history": {
+    "title": "Estimation History",
+    "subtitle": "Your saved projects",
+    "projectsCount": "{count} saved project(s)",
+    "loadingProjects": "Loading projects...",
+    "noProjects": "No saved projects",
+    "noProjectsDescription": "Start by creating a new estimation",
+    "project": "Project",
+    "date": "Date",
+    "createdOn": "Created on",
+    "stack": "Stack",
+    "stackLabel": "Stack {stack}",
+    "workload": "Days",
+    "budget": "Budget",
+    "status": "Status",
+    "statusDraft": "Draft",
+    "statusPending": "Pending",
+    "statusValidated": "Validated",
+    "actions": "Actions",
+    "view": "View",
+    "validate": "Validate",
+    "confirmDelete": "Delete project \"{name}\"?",
+    "deleteConfirm": "Are you sure you want to delete this project?",
+    "deleteSuccess": "Project deleted successfully",
+    "deleteError": "Deletion error"
+  },
+  "chat": {
+    "title": "Chat with Claude",
+    "subtitle": "Refine your analysis by asking questions",
+    "emptyState": "Ask Claude a question to refine your analysis",
+    "emptyStateExample": "Ex: \"Can you help me identify missing features?\"",
+    "placeholder": "Ask your question...",
+    "send": "Send",
+    "sending": "Sending...",
+    "thinking": "Claude is thinking...",
+    "messagesCount": "{count} messages",
+    "errorOccurred": "An error occurred",
+    "clearConversation": "Clear Conversation"
+  },
+  "stacks": {
+    "A": {
+      "name": "Stack A — Enterprise",
+      "cms": "Drupal",
+      "frontend": "Next.js",
+      "description": "Complex projects, advanced multilingual, enterprise workflows"
+    },
+    "B": {
+      "name": "Stack B — Standard",
+      "cms": "Directus",
+      "frontend": "Nuxt.js",
+      "description": "Corporate sites, WebGL/3D, API-first, medium projects"
+    },
+    "C": {
+      "name": "Stack C — Light",
+      "cms": "Decap CMS / Directus",
+      "frontend": "Nuxt.js SSG / Vite.js",
+      "description": "Showcase sites, internal apps, limited budget"
+    }
+  },
+  "questions": {
+    "projectType": {
+      "question": "What is the project type?",
+      "options": {
+        "vitrine": {
+          "label": "Showcase website (< 15 pages)"
+        },
+        "corporate": {
+          "label": "Corporate website (15-50 pages)"
+        },
+        "editorial": {
+          "label": "Complex editorial site"
+        },
+        "webapp": {
+          "label": "Web application / Dashboard"
+        },
+        "webgl": {
+          "label": "WebGL / 3D Experience"
+        },
+        "intranet": {
+          "label": "Intranet / Enterprise portal"
+        },
+        "internal": {
+          "label": "Internal app (no SEO)"
+        }
+      }
+    },
+    "dataComplexity": {
+      "question": "What is the data structure complexity?",
+      "options": {
+        "simple": {
+          "label": "Simple (< 5 content types)"
+        },
+        "medium": {
+          "label": "Medium (5-10 types, simple relations)"
+        },
+        "complex": {
+          "label": "Complex (> 10 types, multiple relations)"
+        },
+        "enterprise": {
+          "label": "Enterprise (workflows, validations)"
+        }
+      }
+    },
+    "multilingual": {
+      "question": "How many languages are planned?",
+      "options": {
+        "mono": {
+          "label": "Monolingual"
+        },
+        "bi": {
+          "label": "2-3 languages"
+        },
+        "multi": {
+          "label": "4-5 languages"
+        },
+        "enterprise": {
+          "label": "> 5 languages"
+        }
+      }
+    },
+    "integrations": {
+      "question": "Which third-party integrations are needed?",
+      "options": {
+        "none": {
+          "label": "None"
+        },
+        "crm": {
+          "label": "CRM (Salesforce, HubSpot...)"
+        },
+        "erp": {
+          "label": "ERP"
+        },
+        "sso": {
+          "label": "SSO / LDAP / Active Directory"
+        },
+        "payment": {
+          "label": "Online payment"
+        },
+        "analytics": {
+          "label": "Advanced analytics / Data"
+        },
+        "search": {
+          "label": "Search engine (Algolia, Elasticsearch)"
+        }
+      }
+    },
+    "accessibility": {
+      "question": "What accessibility level is required?",
+      "options": {
+        "none": {
+          "label": "Standard (best practices)"
+        },
+        "aa": {
+          "label": "WCAG AA"
+        },
+        "aaa": {
+          "label": "WCAG AAA"
+        }
+      }
+    },
+    "security": {
+      "question": "What security constraints?",
+      "options": {
+        "standard": {
+          "label": "Standard"
+        },
+        "enhanced": {
+          "label": "Enhanced (security audit)"
+        },
+        "enterprise": {
+          "label": "Enterprise (compliance, certifications)"
+        }
+      }
+    },
+    "deadline": {
+      "question": "What is the planned schedule?",
+      "options": {
+        "urgent": {
+          "label": "Urgent (< 4 weeks)",
+          "note": "Prefer Stack B or C"
+        },
+        "standard": {
+          "label": "Standard (1-3 months)"
+        },
+        "comfortable": {
+          "label": "Comfortable (3-6 months)"
+        },
+        "long": {
+          "label": "Long term (> 6 months)"
+        }
+      }
+    }
+  }
+}

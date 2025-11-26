@@ -7,7 +7,24 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/google-fonts',
+    '@nuxtjs/i18n',
   ],
+
+  i18n: {
+    locales: [
+      { code: 'fr', iso: 'fr-FR', file: 'fr.json', name: 'Français' },
+      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' },
+    ],
+    lazy: true,
+    langDir: 'locales',
+    defaultLocale: 'fr',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+    },
+  },
 
   runtimeConfig: {
     public: {

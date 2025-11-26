@@ -15,6 +15,7 @@
   "dependencies": {
     "@directus/sdk": "^17.0.0",
     "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/i18n": "^10.2.1",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/nuxt": "^10.9.0",
     "nuxt": "^3.11.0",

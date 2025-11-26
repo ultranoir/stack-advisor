@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
         <IconBrain class="w-5 h-5 text-blue-600" />
-        Discussion avec Claude
+        {{ $t('chat.title') }}
       </h3>
       
       <!-- Model selector -->
@@ -12,9 +12,9 @@
         class="px-3 py-2 border border-slate-300 rounded-lg text-sm"
         :disabled="store.isChatting"
       >
-        <option value="claude-haiku-4-20250514">Haiku (rapide)</option>
-        <option value="claude-sonnet-4-20250514">Sonnet (équilibré)</option>
-        <option value="claude-opus-4-20250514">Opus (puissant)</option>
+        <option value="claude-haiku-4-20250514">{{ $t('estimation.modelHaiku') }}</option>
+        <option value="claude-sonnet-4-20250514">{{ $t('estimation.modelSonnet') }}</option>
+        <option value="claude-opus-4-20250514">{{ $t('estimation.modelOpus') }}</option>
       </select>
     </div>
 
@@ -25,8 +25,8 @@
     >
       <div v-if="store.conversationHistory.length === 0" class="text-center text-slate-400 py-8">
         <IconBrain class="w-12 h-12 mx-auto mb-3 opacity-50" />
-        <p>Posez une question à Claude pour affiner votre analyse</p>
-        <p class="text-sm mt-1">Ex: "Peux-tu m'aider à identifier les fonctionnalités manquantes ?"</p>
+        <p>{{ $t('chat.emptyState') }}</p>
+        <p class="text-sm mt-1">{{ $t('chat.emptyStateExample') }}</p>
       </div>
 
       <div
@@ -55,7 +55,7 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          <span class="text-sm text-slate-600">Claude réfléchit...</span>
+          <span class="text-sm text-slate-600">{{ $t('chat.thinking') }}</span>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
       <input
         v-model="messageInput"
         type="text"
-        placeholder="Posez votre question..."
+        :placeholder="$t('chat.placeholder')"
         class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         :disabled="store.isChatting"
       />
@@ -80,7 +80,7 @@
         class="btn-primary"
       >
         <IconSend class="w-4 h-4" />
-        Envoyer
+        {{ store.isChatting ? $t('chat.sending') : $t('chat.send') }}
       </button>
     </form>
 
@@ -92,12 +92,12 @@
         class="btn-ghost text-sm"
         :disabled="store.isChatting"
       >
-        Effacer la conversation
+        {{ $t('chat.clearConversation') }}
       </button>
       <span v-else></span>
       
       <span class="text-xs text-slate-400">
-        {{ store.conversationHistory.length }} messages
+        {{ $t('chat.messagesCount', { count: store.conversationHistory.length }) }}
       </span>
     </div>
   </div>
@@ -105,6 +105,7 @@
 
 <script setup lang="ts">
 const store = useEstimationStore()
+const { locale } = useI18n()
 const messageInput = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -127,7 +128,8 @@ const sendMessage = async () => {
 }
 
 const formatTime = (timestamp: string) => {
-  return new Date(timestamp).toLocaleTimeString('fr-FR', {
+  const localeCode = locale.value === 'en' ? 'en-US' : 'fr-FR'
+  return new Date(timestamp).toLocaleTimeString(localeCode, {
     hour: '2-digit',
     minute: '2-digit',
   })
