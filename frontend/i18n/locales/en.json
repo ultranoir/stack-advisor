@@ -132,6 +132,8 @@
     "exportPDF": "Export PDF",
     "exportPDFNotImplemented": "PDF Export - Feature to be implemented",
     "loadingRates": "Loading rate grid...",
+    "tjmError": "Valuation impossible: Daily rates unavailable or missing.",
+    "tjmErrorDescription": "Average daily rates (TJM) are not available. Please check access permissions in Directus or contact an administrator.",
     "incompleteQuestionnaire": "Incomplete Questionnaire",
     "incompleteMessage": "You must first complete the questionnaire to see recommendations and estimates.",
     "completeQuestionnaire": "Complete Questionnaire",

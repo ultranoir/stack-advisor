@@ -54,7 +54,6 @@ export const useDirectus = () => {
       try {
         const profiles = await client.request(
           readItems('tjm_profiles', {
-            filter: { is_active: { _eq: true } },
             sort: ['sort'],
             fields: ['*'],
           })

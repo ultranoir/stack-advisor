@@ -58,7 +58,6 @@ export interface TjmProfile {
   name: string
   tjm: number
   default_percentage: number
-  is_active: boolean
   sort: number
 }
 

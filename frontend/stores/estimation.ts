@@ -14,6 +14,7 @@ interface EstimationState {
   discountValue: number
   savedProjectId: string | null
   isLoadingTjm: boolean
+  tjmError: string | null
   // Document analysis
   uploadedDocuments: UploadedDocument[]
   aiAnalysis: AIAnalysis | null
@@ -40,6 +41,7 @@ export const useEstimationStore = defineStore('estimation', {
     discountValue: 0,
     savedProjectId: null,
     isLoadingTjm: false,
+    tjmError: null,
     // Document analysis
     uploadedDocuments: [],
     aiAnalysis: null,
@@ -121,18 +123,25 @@ export const useEstimationStore = defineStore('estimation', {
   actions: {
     async loadTjmProfiles() {
       if (this.tjmProfiles.length > 0) return
-      
+
       this.isLoadingTjm = true
+      this.tjmError = null
       try {
         const { getTjmProfiles } = useDirectus()
         this.tjmProfiles = await getTjmProfiles()
-        
+
+        if (this.tjmProfiles.length === 0) {
+          this.tjmError = 'result.tjmError'
+          return
+        }
+
         // Initialiser la distribution par défaut
         this.tjmProfiles.forEach(profile => {
           this.distribution[profile.id] = profile.default_percentage
         })
       } catch (error) {
         console.error('Error loading TJM profiles:', error)
+        this.tjmError = 'result.tjmError'
       } finally {
         this.isLoadingTjm = false
       }
