@@ -91,12 +91,12 @@ export const useEstimation = () => {
       const days = daysOverrides?.[profile.id]
         ?? Math.round(totalDays * (percentage / 100) * 10) / 10
 
-      const tjmStandard = profile.tjm
+      const tjmStandard = profile.tjm_standard
       const tjmApplied = tjmOverrides?.[profile.id] ?? tjmStandard
       const cost = days * tjmApplied
 
       breakdown.push({
-        profile: profile.name,
+        profile: profile.label,
         profile_id: profile.id,
         days,
         tjm_standard: tjmStandard,
@@ -126,7 +126,7 @@ export const useEstimation = () => {
     
     tjmProfiles.forEach(profile => {
       if (profile.default_percentage > 0) {
-        weightedTjm += profile.tjm * profile.default_percentage
+        weightedTjm += profile.tjm_standard * profile.default_percentage
         totalWeight += profile.default_percentage
       }
     })

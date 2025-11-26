@@ -55,7 +55,7 @@ export const useDirectus = () => {
         const profiles = await client.request(
           readItems('tjm_profiles', {
             sort: ['sort'],
-            fields: ['id', 'name', 'category', 'level', 'tjm', 'default_percentage', 'sort'],
+            fields: ['id', 'label', 'category', 'level', 'tjm_standard', 'default_percentage', 'sort'],
           })
         )
         return profiles as TjmProfile[]

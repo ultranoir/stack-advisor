@@ -58,10 +58,10 @@ export type ProfileLevel = 'junior' | 'standard' | 'senior'
 
 export interface TjmProfile {
   id: string
-  name: string
+  label: string
   category: ProfileCategory
   level: ProfileLevel
-  tjm: number
+  tjm_standard: number
   default_percentage: number
   sort: number
 }

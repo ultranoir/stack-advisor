@@ -221,7 +221,7 @@ export const useEstimationStore = defineStore('estimation', {
     setTjmOverride(profileId: string, tjm: number) {
       const profile = this.tjmProfiles.find(p => p.id === profileId)
       if (profile) {
-        if (tjm === profile.tjm) {
+        if (tjm === profile.tjm_standard) {
           // Si on remet le TJM standard, on supprime l'override
           delete this.tjmOverrides[profileId]
         } else {
