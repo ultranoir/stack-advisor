@@ -40,11 +40,11 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Stack Advisor - Outil d\'estimation interne',
+      title: 'UN Props Advisor - Outil d\'aide à la décision',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Outil interne de recommandation de stack et d\'estimation budgétaire' },
+        { name: 'description', content: 'Outil d\'aide à la recommandation de stack et d\'estimation budgétaire' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

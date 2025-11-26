@@ -56,11 +56,15 @@
   .badge-success {
     @apply badge bg-green-100 text-green-800;
   }
-  
+
   .badge-warning {
     @apply badge bg-amber-100 text-amber-800;
   }
-  
+
+  .badge-info {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
   .badge-neutral {
     @apply badge bg-slate-100 text-slate-600;
   }

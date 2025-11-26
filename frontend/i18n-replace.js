@@ -10,7 +10,7 @@ const resultReplacements = [
   // Header
   ['<h2 class="text-3xl font-bold text-slate-800">Recommandation</h2>', '<h2 class="text-3xl font-bold text-slate-800">{{ $t(\'result.title\') }}</h2>'],
   ['<p class="text-slate-500 mt-1">Basée sur vos réponses au questionnaire</p>', '<p class="text-slate-500 mt-1">{{ $t(\'result.subtitle\') }}</p>'],
-  ['<button @click="handleNewEstimation" class="btn-secondary">\n          Nouvelle estimation\n        </button>', '<button @click="handleNewEstimation" class="btn-secondary">\n          {{ $t(\'nav.newEstimation\') }}\n        </button>'],
+  ['<button @click="handleNewEstimation" class="btn-secondary">\n          Nouvelle Props\n        </button>', '<button @click="handleNewEstimation" class="btn-secondary">\n          {{ $t(\'nav.newEstimation\') }}\n        </button>'],
 
   // Loading
   ['<p class="text-slate-500 mt-4">Chargement de la grille TJM...</p>', '<p class="text-slate-500 mt-4">{{ $t(\'result.loadingRates\') }}</p>'],

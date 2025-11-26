@@ -10,9 +10,11 @@ interface EstimationState {
   tjmProfiles: TjmProfile[]
   distribution: Record<string, number>
   tjmOverrides: Record<string, number>
+  daysOverrides: Record<string, number>
   discountType: DiscountType
   discountValue: number
   savedProjectId: string | null
+  projectStatus: 'draft' | 'pending' | 'validated'
   isLoadingTjm: boolean
   tjmError: string | null
   // Document analysis
@@ -37,9 +39,11 @@ export const useEstimationStore = defineStore('estimation', {
     tjmProfiles: [],
     distribution: {},
     tjmOverrides: {},
+    daysOverrides: {},
     discountType: 'none',
     discountValue: 0,
     savedProjectId: null,
+    projectStatus: 'draft',
     isLoadingTjm: false,
     tjmError: null,
     // Document analysis
@@ -97,6 +101,10 @@ export const useEstimationStore = defineStore('estimation', {
     hasCustomTjm: (state): boolean => {
       return Object.keys(state.tjmOverrides).length > 0
     },
+
+    hasCustomDays: (state): boolean => {
+      return Object.keys(state.daysOverrides).length > 0
+    },
     
     hasAiAnalysis: (state): boolean => {
       return state.aiAnalysis !== null
@@ -122,7 +130,17 @@ export const useEstimationStore = defineStore('estimation', {
 
   actions: {
     async loadTjmProfiles() {
-      if (this.tjmProfiles.length > 0) return
+      // Si les profils sont déjà chargés, vérifier la distribution
+      if (this.tjmProfiles.length > 0) {
+        // Si la distribution est vide, la réinitialiser
+        const hasDistribution = Object.keys(this.distribution).length > 0
+        if (!hasDistribution) {
+          this.tjmProfiles.forEach(profile => {
+            this.distribution[profile.id] = profile.default_percentage
+          })
+        }
+        return
+      }
 
       this.isLoadingTjm = true
       this.tjmError = null
@@ -219,7 +237,23 @@ export const useEstimationStore = defineStore('estimation', {
     clearAllTjmOverrides() {
       this.tjmOverrides = {}
     },
-    
+
+    setDaysOverride(profileId: string, days: number) {
+      if (days > 0) {
+        this.daysOverrides[profileId] = days
+      } else {
+        delete this.daysOverrides[profileId]
+      }
+    },
+
+    clearDaysOverride(profileId: string) {
+      delete this.daysOverrides[profileId]
+    },
+
+    clearAllDaysOverrides() {
+      this.daysOverrides = {}
+    },
+
     setDiscountType(type: DiscountType) {
       this.discountType = type
       if (type === 'none') {
@@ -247,9 +281,11 @@ export const useEstimationStore = defineStore('estimation', {
       this.projectName = ''
       this.estimationType = 'quick'
       this.tjmOverrides = {}
+      this.daysOverrides = {}
       this.discountType = 'none'
       this.discountValue = 0
       this.savedProjectId = null
+      this.projectStatus = 'draft'
       this.uploadedDocuments = []
       this.aiAnalysis = null
       this.isAnalyzing = false
@@ -388,26 +424,27 @@ Aide l'utilisateur à affiner son analyse, compléter les informations manquante
       if (!this.projectName.trim() || !this.recommendation) {
         return null
       }
-      
+
       const { calculateDetailedBudget, calculateDiscount } = useEstimation()
       const { createProject, updateProject } = useDirectus()
-      
+
       const avgDays = Math.round(
         (this.recommendation.days.min + this.recommendation.days.max) / 2
       )
       const budget = calculateDetailedBudget(
-        avgDays, 
-        this.tjmProfiles, 
+        avgDays,
+        this.tjmProfiles,
         this.distribution,
-        this.tjmOverrides
+        this.tjmOverrides,
+        this.daysOverrides
       )
-      
+
       const { finalBudget } = calculateDiscount(
         budget.total,
         this.discountType,
         this.discountValue
       )
-      
+
       const projectData = {
         name: this.projectName,
         stack: this.recommendation.stack,
@@ -423,19 +460,79 @@ Aide l'utilisateur à affiner son analyse, compléter les informations manquante
         ai_analysis: this.aiAnalysis,
         conversation_history: this.conversationHistory.length > 0 ? this.conversationHistory : null,
       }
-      
+
       let project
       if (this.savedProjectId) {
         project = await updateProject(this.savedProjectId, projectData)
       } else {
         project = await createProject(projectData)
       }
-      
+
       if (project) {
         this.savedProjectId = project.id
       }
-      
+
       return project
+    },
+
+    async loadProject(projectId: string) {
+      const { getProject } = useDirectus()
+
+      try {
+        const project = await getProject(projectId)
+
+        if (!project) {
+          throw new Error('Project not found')
+        }
+
+        // Restaurer l'état complet du projet
+        this.projectName = project.name
+        this.answers = project.answers || {}
+        this.discountType = project.discount_type || 'none'
+        this.discountValue = project.discount_value || 0
+        this.savedProjectId = project.id
+        this.projectStatus = project.status || 'draft'
+        this.aiAnalysis = project.ai_analysis || null
+        this.conversationHistory = project.conversation_history || []
+
+        // Restaurer la distribution et les TJM personnalisés depuis le breakdown
+        if (project.budget_breakdown && project.budget_breakdown.length > 0) {
+          // Charger les profils TJM si nécessaire
+          await this.loadTjmProfiles()
+
+          // Reconstruire la distribution, days et tjm overrides depuis le breakdown
+          this.distribution = {}
+          this.tjmOverrides = {}
+          this.daysOverrides = {}
+
+          project.budget_breakdown.forEach((item: any) => {
+            this.distribution[item.profile_id] = item.percentage
+
+            // Stocker les jours personnalisés
+            if (item.days) {
+              this.daysOverrides[item.profile_id] = item.days
+            }
+
+            // Si le TJM appliqué diffère du TJM standard, c'est un override
+            if (item.tjm_applied !== item.tjm_standard) {
+              this.tjmOverrides[item.profile_id] = item.tjm_applied
+            }
+          })
+        }
+
+        // Restaurer les documents uploadés si présents
+        if (project.documents && Array.isArray(project.documents)) {
+          this.uploadedDocuments = project.documents.map((docId: string) => ({
+            id: docId,
+            filename: `Document ${docId}`, // Le nom exact n'est pas critique pour l'affichage
+          }))
+        }
+
+        return project
+      } catch (error) {
+        console.error('Error loading project:', error)
+        throw error
+      }
     },
   },
 })

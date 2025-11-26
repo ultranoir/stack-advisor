@@ -57,30 +57,40 @@ export const useEstimation = () => {
 
   /**
    * Calcule le budget détaillé par profil avec TJM dynamiques
-   * @param totalDays - Nombre total de jours
+   * @param totalDays - Nombre total de jours (utilisé si pas de daysOverrides)
    * @param tjmProfiles - Profils TJM depuis Directus
    * @param distribution - Répartition personnalisée (optionnel)
    * @param tjmOverrides - TJM modifiés pour ce projet (optionnel)
+   * @param daysOverrides - Jours personnalisés par profil (optionnel)
    */
   const calculateDetailedBudget = (
     totalDays: number,
     tjmProfiles: TjmProfile[],
     distribution?: Record<string, number>,
-    tjmOverrides?: Record<string, number>
+    tjmOverrides?: Record<string, number>,
+    daysOverrides?: Record<string, number>
   ): DetailedBudget => {
     const breakdown: BudgetBreakdownItem[] = []
     let total = 0
     let sumDays = 0
 
-    // Filtrer les profils avec une répartition > 0
+    // Filtrer les profils avec une répartition > 0 ou des jours définis
     const activeProfiles = tjmProfiles.filter(profile => {
+      // Si des jours sont définis pour ce profil, l'inclure
+      if (daysOverrides?.[profile.id]) return true
+
+      // Sinon, vérifier le pourcentage
       const percentage = distribution?.[profile.id] ?? profile.default_percentage
       return percentage > 0
     })
 
     activeProfiles.forEach((profile) => {
       const percentage = distribution?.[profile.id] ?? profile.default_percentage
-      const days = Math.round(totalDays * (percentage / 100) * 10) / 10
+
+      // Utiliser les jours personnalisés si définis, sinon calculer depuis le pourcentage
+      const days = daysOverrides?.[profile.id]
+        ?? Math.round(totalDays * (percentage / 100) * 10) / 10
+
       const tjmStandard = profile.tjm
       const tjmApplied = tjmOverrides?.[profile.id] ?? tjmStandard
       const cost = days * tjmApplied

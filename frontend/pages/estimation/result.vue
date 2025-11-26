@@ -111,9 +111,33 @@
               </svg>
               {{ store.savedProjectId ? $t('result.updateProject') : $t('common.save') }}
             </button>
+            <button
+              v-if="store.savedProjectId && store.projectStatus !== 'validated'"
+              @click="handleValidate"
+              :disabled="isValidating"
+              class="btn-secondary border-green-600 text-green-600 hover:bg-green-50"
+            >
+              <svg v-if="isValidating" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              {{ $t('history.validate') }}
+            </button>
+            <span
+              v-else-if="store.savedProjectId && store.projectStatus === 'validated'"
+              class="badge-success flex items-center gap-2 px-4"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              {{ $t('history.statusValidated') }}
+            </span>
           </div>
           <p v-if="saveSuccess" class="text-sm text-green-600 mt-2">
             {{ $t('result.projectSaved') }}
+          </p>
+          <p v-if="validateSuccess" class="text-sm text-green-600 mt-2">
+            {{ $t('result.projectValidated') }}
           </p>
         </div>
 
@@ -179,10 +203,13 @@
           <div class="card p-6">
             <div class="flex items-center justify-between mb-4">
               <h4 class="text-lg font-semibold text-slate-800">{{ $t('result.detailedBudget') }}</h4>
-              <div class="flex items-center gap-4">
-                <p class="text-sm text-slate-500">Base : {{ avgDays }} jours</p>
+              <div class="flex items-center gap-2">
+                <p class="text-sm text-slate-500">Base : {{ avgDays }} {{ $t('result.days') }}</p>
+                <span v-if="store.hasCustomDays" class="badge-info text-xs">
+                  {{ $t('result.customDays') }}
+                </span>
                 <span v-if="store.hasCustomTjm" class="badge-warning text-xs">
-                  TJM personnalisés
+                  {{ $t('result.customRates') }}
                 </span>
               </div>
             </div>
@@ -192,8 +219,7 @@
                 <thead>
                   <tr class="border-b border-slate-200">
                     <th class="text-left py-3 text-sm font-medium text-slate-500">{{ $t('result.profile') }}</th>
-                    <th class="text-center py-3 text-sm font-medium text-slate-500 w-20">{{ $t('result.percentage') }}</th>
-                    <th class="text-right py-3 text-sm font-medium text-slate-500">{{ $t('result.days') }}</th>
+                    <th class="text-center py-3 text-sm font-medium text-slate-500 w-24">{{ $t('result.days') }}</th>
                     <th class="text-right py-3 text-sm font-medium text-slate-500 w-28">
                       {{ $t('result.dailyRate') }}
                       <span class="text-xs text-slate-400 block">{{ $t('result.standardApplied') }}</span>
@@ -212,17 +238,16 @@
                       <input
                         type="number"
                         min="0"
-                        max="100"
-                        :value="item.percentage"
-                        @input="handleDistributionChange(item.profile_id, $event)"
-                        class="w-16 px-2 py-1 text-center text-sm border border-slate-300 rounded"
+                        step="0.5"
+                        :value="item.days"
+                        @input="handleDaysChange(item.profile_id, $event)"
+                        class="w-20 px-2 py-1 text-center text-sm border border-slate-300 rounded"
                       />
                     </td>
-                    <td class="py-3 text-right text-sm text-slate-600">{{ item.days }}</td>
                     <td class="py-3 text-right">
                       <div class="flex items-center justify-end gap-1">
-                        <span 
-                          v-if="item.tjm_applied !== item.tjm_standard" 
+                        <span
+                          v-if="item.tjm_applied !== item.tjm_standard"
                           class="text-xs text-slate-400 line-through"
                         >
                           {{ item.tjm_standard }}€
@@ -233,8 +258,8 @@
                           :value="item.tjm_applied"
                           @input="handleTjmChange(item.profile_id, $event)"
                           class="w-20 px-2 py-1 text-right text-sm border rounded"
-                          :class="item.tjm_applied !== item.tjm_standard 
-                            ? 'border-amber-300 bg-amber-50' 
+                          :class="item.tjm_applied !== item.tjm_standard
+                            ? 'border-amber-300 bg-amber-50'
                             : 'border-slate-300'"
                         />
                       </div>
@@ -246,10 +271,10 @@
                 </tbody>
                 <tfoot>
                   <tr class="bg-slate-50">
-                    <td class="py-3 text-sm font-semibold text-slate-800" colspan="2">
+                    <td class="py-3 text-sm font-semibold text-slate-800">
                       {{ $t('result.subtotal') }}
                     </td>
-                    <td class="py-3 text-right text-sm font-semibold text-slate-800">
+                    <td class="py-3 text-center text-sm font-semibold text-slate-800">
                       {{ detailedBudget.totalDays }} j
                     </td>
                     <td class="py-3"></td>
@@ -263,12 +288,16 @@
 
             <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-200">
               <div class="flex gap-2">
-                <button @click="store.resetDistribution" class="btn-ghost text-sm">
-                  {{ $t('result.resetPercentages') }}
+                <button
+                  v-if="store.hasCustomDays"
+                  @click="store.clearAllDaysOverrides"
+                  class="btn-ghost text-sm"
+                >
+                  {{ $t('result.resetDays') }}
                 </button>
-                <button 
+                <button
                   v-if="store.hasCustomTjm"
-                  @click="store.clearAllTjmOverrides" 
+                  @click="store.clearAllTjmOverrides"
                   class="btn-ghost text-sm"
                 >
                   {{ $t('result.resetRates') }}
@@ -370,11 +399,15 @@ definePageMeta({
 const store = useEstimationStore()
 const { calculateQuickEstimate, calculateDetailedBudget, calculateDiscount, formatCurrency, formatCurrencyK } =
   useEstimation()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { getTranslatedStack } = useI18nData()
+const { updateProject } = useDirectus()
+const { generateEstimationPdf } = usePdfExport()
 
 const isSaving = ref(false)
 const saveSuccess = ref(false)
+const isValidating = ref(false)
+const validateSuccess = ref(false)
 
 // Load TJM profiles on mount (no redirect to allow showing incomplete state message)
 onMounted(async () => {
@@ -403,10 +436,11 @@ const quickEstimate = computed(() => {
 const detailedBudget = computed(() => {
   if (!recommendation.value || store.tjmProfiles.length === 0) return null
   return calculateDetailedBudget(
-    avgDays.value, 
-    store.tjmProfiles, 
+    avgDays.value,
+    store.tjmProfiles,
     store.distribution,
-    store.tjmOverrides
+    store.tjmOverrides,
+    store.daysOverrides
   )
 })
 
@@ -419,10 +453,10 @@ const discountResult = computed(() => {
   )
 })
 
-const handleDistributionChange = (profileId: string, event: Event) => {
+const handleDaysChange = (profileId: string, event: Event) => {
   const target = event.target as HTMLInputElement
   const value = parseFloat(target.value) || 0
-  store.setDistribution(profileId, value)
+  store.setDaysOverride(profileId, value)
 }
 
 const handleTjmChange = (profileId: string, event: Event) => {
@@ -443,6 +477,7 @@ const handleSave = async () => {
   try {
     const project = await store.saveProject()
     if (project) {
+      store.projectStatus = project.status
       saveSuccess.value = true
       setTimeout(() => {
         saveSuccess.value = false
@@ -455,8 +490,71 @@ const handleSave = async () => {
   }
 }
 
+const handleValidate = async () => {
+  if (!store.savedProjectId) return
+
+  isValidating.value = true
+  validateSuccess.value = false
+
+  try {
+    const project = await updateProject(store.savedProjectId, { status: 'validated' })
+    if (project) {
+      store.projectStatus = 'validated'
+      validateSuccess.value = true
+      setTimeout(() => {
+        validateSuccess.value = false
+      }, 3000)
+    }
+  } catch (error) {
+    console.error('Error validating project:', error)
+  } finally {
+    isValidating.value = false
+  }
+}
+
 const exportPDF = () => {
-  // TODO: Implement PDF export
-  alert(t('result.exportPDFNotImplemented'))
+  if (!recommendation.value || !stack.value) {
+    return
+  }
+
+  try {
+    const discountData = store.discountType !== 'none' ? {
+      type: store.discountType,
+      value: store.discountValue,
+      discountAmount: discountResult.value.discountAmount,
+      finalBudget: discountResult.value.finalBudget,
+    } : undefined
+
+    generateEstimationPdf({
+      projectName: store.projectName || t('estimation.title'),
+      stack: stack.value,
+      quickEstimate: quickEstimate.value || undefined,
+      detailedBudget: detailedBudget.value || undefined,
+      discount: discountData,
+      locale: locale.value,
+      translations: {
+        pdfTitle: t('result.pdfTitle'),
+        pdfGeneratedOn: t('result.pdfGeneratedOn'),
+        pdfRecommendedStack: t('result.pdfRecommendedStack'),
+        pdfQuickEstimation: t('result.pdfQuickEstimation'),
+        pdfDetailedBudget: t('result.pdfDetailedBudget'),
+        pdfCommercialDiscount: t('result.pdfCommercialDiscount'),
+        pdfWorkload: t('result.pdfWorkload'),
+        pdfBudget: t('result.pdfBudget'),
+        pdfFooter: t('result.pdfFooter'),
+        profile: t('result.profile'),
+        days: t('result.days'),
+        dailyRate: t('result.dailyRate'),
+        total: t('result.total'),
+        subtotal: t('result.subtotal'),
+        budgetBeforeDiscount: t('result.budgetBeforeDiscount'),
+        discount: t('result.discount'),
+        finalBudget: t('result.finalBudget'),
+      },
+    })
+  } catch (error) {
+    console.error('Error generating PDF:', error)
+    alert(t('estimation.analysisError'))
+  }
 }
 </script>
