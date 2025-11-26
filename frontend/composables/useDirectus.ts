@@ -96,7 +96,7 @@ export const useDirectus = () => {
     // Analyze Document with Claude
     async analyzeDocument(fileId: string, model: string = 'claude-sonnet-4-20250514'): Promise<any | null> {
       try {
-        const response = await fetch(`${config.public.directusUrl}/analyze-document`, {
+        const response = await fetch(`${config.public.directusUrl}/analyze-document/analyze`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
