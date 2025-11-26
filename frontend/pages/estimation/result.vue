@@ -233,7 +233,27 @@
                     :key="item.profile_id"
                     class="border-b border-slate-100"
                   >
-                    <td class="py-3 text-sm text-slate-700">{{ item.profile }}</td>
+                    <td class="py-3">
+                      <div class="flex flex-col gap-1">
+                        <span class="text-sm font-medium text-slate-700">{{ item.profile }}</span>
+                        <div class="flex gap-1 items-center">
+                          <span
+                            v-if="getProfileById(item.profile_id)"
+                            :class="getCategoryColor(getProfileById(item.profile_id).category)"
+                            class="text-xs px-2 py-0.5 rounded"
+                          >
+                            {{ getCategoryLabel(getProfileById(item.profile_id).category) }}
+                          </span>
+                          <span
+                            v-if="getProfileById(item.profile_id)"
+                            :class="getLevelBadgeClass(getProfileById(item.profile_id).level)"
+                            class="text-xs"
+                          >
+                            {{ getLevelLabel(getProfileById(item.profile_id).level) }}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
                     <td class="py-3 text-center">
                       <input
                         type="number"
@@ -403,6 +423,7 @@ const { t, locale } = useI18n()
 const { getTranslatedStack } = useI18nData()
 const { updateProject } = useDirectus()
 const { generateEstimationPdf } = usePdfExport()
+const { getCategoryLabel, getLevelLabel, getCategoryColor, getLevelBadgeClass } = useProfileHelpers()
 
 const isSaving = ref(false)
 const saveSuccess = ref(false)
@@ -452,6 +473,10 @@ const discountResult = computed(() => {
     store.discountValue
   )
 })
+
+const getProfileById = (profileId: string) => {
+  return store.tjmProfiles.find(p => p.id === profileId)
+}
 
 const handleDaysChange = (profileId: string, event: Event) => {
   const target = event.target as HTMLInputElement

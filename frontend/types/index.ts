@@ -53,9 +53,14 @@ export interface Recommendation {
 }
 
 // Types pour la grille TJM (depuis Directus)
+export type ProfileCategory = 'dev' | 'devops' | 'design' | 'management' | 'other'
+export type ProfileLevel = 'junior' | 'standard' | 'senior'
+
 export interface TjmProfile {
   id: string
   name: string
+  category: ProfileCategory
+  level: ProfileLevel
   tjm: number
   default_percentage: number
   sort: number
